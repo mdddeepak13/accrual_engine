@@ -1,0 +1,12 @@
+[server]
+maxUploadSize = 200          # MB — allows large Excel files
+
+[theme]
+primaryColor        = "#2d6a9f"
+backgroundColor     = "#ffffff"
+secondaryBackgroundColor = "#f0f4ff"
+textColor           = "#1e3a5f"
+font                = "sans serif"
+
+[browser]
+gatherUsageStats = false

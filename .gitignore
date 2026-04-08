@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+.env.*
+*.xlsx
+*.xls
+*.csv
+Accrual_Report_*.json
+.DS_Store
