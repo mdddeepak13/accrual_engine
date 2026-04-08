@@ -20,6 +20,7 @@ import pandas as pd
 import streamlit as st
 
 from tools.data_loader import (
+    load_accrual_data,
     load_from_uploads,
     merge_datasets,
     get_periods,
@@ -127,6 +128,8 @@ def _init_state():
         if k not in st.session_state:
             st.session_state[k] = v
 
+DEFAULT_FILE = "Accrual_Sample_Data.xlsx"
+
 _init_state()
 
 
@@ -168,6 +171,23 @@ def _compute_store(df: pd.DataFrame) -> dict:
 def _apply_store(computed: dict):
     for k, v in computed.items():
         st.session_state[k] = v
+
+
+def _load_default():
+    """Auto-load the bundled sample file on first run if no data uploaded yet."""
+    import pathlib
+    path = pathlib.Path(DEFAULT_FILE)
+    if not path.exists():
+        return
+    try:
+        df = load_accrual_data(str(path))
+        computed = _compute_store(df)
+        st.session_state.df = df
+        st.session_state.source_files = [path.name]
+        for k, v in computed.items():
+            st.session_state[k] = v
+    except Exception:
+        pass  # let the user upload manually if default fails
 
 
 def process_uploads(uploaded_files, mode: str = "replace"):
@@ -425,6 +445,11 @@ You help the finance team query, analyse, and understand their accrual data.
             })
         work.append({"role": "assistant", "content": response.content})
         work.append({"role": "user",      "content": tool_results})
+
+
+# Auto-load bundled sample data on very first run (before any upload)
+if st.session_state.df is None:
+    _load_default()
 
 
 # ─── Sidebar ──────────────────────────────────────────────────────────────────

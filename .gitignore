@@ -3,8 +3,9 @@ __pycache__/
 *.pyo
 .env
 .env.*
-*.xlsx
-*.xls
-*.csv
+# Exclude generated reports but keep sample data
+Accrual_Report_*.xlsx
+Accrual_Report_*.xls
+Accrual_Report_*.csv
 Accrual_Report_*.json
 .DS_Store
